@@ -5,7 +5,6 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
-import fr.setphysics.renderer.WorldRenderer;
 
 import java.awt.BorderLayout;
 
