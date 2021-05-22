@@ -56,7 +56,7 @@ public class WorldRenderer implements GLEventListener, KeyListener {
         gl.glRotatef(rotateZ, 0.0f, 0.0f, 1.0f);
 
         // Clear de la scène 3D
-        gl.glClearColor(0.195f, 0.590f, 0.656f, 1.0f);
+        gl.glClearColor(0.18f, 0.3f, 0.56f, 1.0f);
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
         // Création de la zone "sol" grisée
