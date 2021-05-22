@@ -2,11 +2,14 @@ package fr.setphysics.renderer;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.glu.GLU;
+import fr.setphysics.common.geom.Position;
 
 
 /**
@@ -14,20 +17,25 @@ import com.jogamp.opengl.glu.GLU;
  * @author pierre
  *
  */
-public class WorldRenderer implements GLEventListener, KeyListener {
+public class Scene3D implements GLEventListener, KeyListener {
+	private final List<Renderable> renderables = new ArrayList<>();
+
 	private GLU glu = new GLU();
 
 	/**
 	 * Attributs représentants les valeurs de rotation selon les 3 axes.
 	 * Ces valeurs sont utilisées afin de manipuler la caméra.
 	 */
-	private float rotateX, rotateY, rotateZ;
-	
-	/**
-	 * Attributs représentants les valeurs de déplacement linéaire selon les 3 axes.
-	 * Ces valeurs sont utilisées afin de manipuler la caméra
-	 */
-	private float zoom, transX, transY;
+	private float rotateZ;
+
+	private Camera camera;
+	private Position cameraPosition;
+
+	public Scene3D(Camera camera) {
+		this.camera = camera;
+		this.cameraPosition = camera.getPosition();
+		renderables.add(new Ground(4, .2));
+	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
@@ -36,6 +44,8 @@ public class WorldRenderer implements GLEventListener, KeyListener {
 
         // Activation de la transparence
         gl.glEnable(GL2.GL_BLEND);
+		gl.glEnable(GL2.GL_LINE_SMOOTH);
+		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
@@ -50,43 +60,18 @@ public class WorldRenderer implements GLEventListener, KeyListener {
         gl.glLoadIdentity();
         
         // Déplacement de la caméra selon les entrées utilisateurs
-        gl.glTranslatef(transX, transY, zoom-5.0f);
-        gl.glRotatef(rotateX, 1.0f, 0.0f, 0.0f);
-        gl.glRotatef(rotateY, 0.0f, 1.0f, 0.0f);
+        gl.glTranslated(cameraPosition.getX(), cameraPosition.getY(), camera.getZoomFactor()-5.0f);
+        gl.glRotated(cameraPosition.getHorizontalAngle(), 1.0f, 0.0f, 0.0f);
+        gl.glRotated(cameraPosition.getVerticalAngle(), 0.0f, 1.0f, 0.0f);
         gl.glRotatef(rotateZ, 0.0f, 0.0f, 1.0f);
 
         // Clear de la scène 3D
         gl.glClearColor(0.18f, 0.3f, 0.56f, 1.0f);
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
-        // Création de la zone "sol" grisée
-        gl.glBegin(GL2.GL_QUADS);
-
-        // Couleur grise
-        gl.glColor4f(0.3f, 0.3f, 0.3f, 0.8f);
-
-        // Placement des points du carré
-        gl.glVertex3f(2.0f, 0f, 2.0f);
-        gl.glVertex3f(2.0f, 0f, -2.0f);
-        gl.glVertex3f(-2.0f, 0f, -2.0f);
-        gl.glVertex3f(-2.0f, 0f, 2.0f);
-        gl.glEnd();
-
-        // Création des lignes de la grille
-        gl.glBegin(GL2.GL_LINES);
-
-        // Couleur Blanche
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        
-        // Placement de chaque ligne
-        for(int i = 0; i <= 20; i++) {
-            gl.glVertex3f((i/5f)-2f, 0f, 2f);
-            gl.glVertex3f((i/5f)-2f, 0f, -2f);
-
-            gl.glVertex3f(2f, 0f, (i/5f)-2f);
-            gl.glVertex3f(-2f, 0f, (i/5f)-2f);
-        }
-        gl.glEnd();
+		for (Renderable renderable : renderables) {
+			renderable.render(gl);
+		}
 	}
 
 	@Override
@@ -111,34 +96,34 @@ public class WorldRenderer implements GLEventListener, KeyListener {
 		// Modification des attributs de la caméra selon la touche utilisée
 		switch (e.getKeyChar()) {
 		case 'a': // ZOOM IN
-			zoom += 0.1f;
+			this.camera.zoom();
 			break;
 		case 'e': // ZOOM OUT
-			zoom -= 0.1f;
+			this.camera.dezoom();
 			break;
 		case 'q': // Déplacement vers la gauche
-			transX += 0.1f;
+			cameraPosition.translateX(.1);
 			break;
 		case 'd': // Déplacement vers la droite
-			transX -= 0.1f;
+			cameraPosition.translateX(-.1);
 			break;
 		case 's': // Déplacement vers le bas
-			transY += 0.1f;
+			cameraPosition.translateY(.1);
 			break;
 		case 'z': // Déplacement vers le haut
-			transY -= 0.1f;
+			cameraPosition.translateY(-.1);
 			break;
 		case 'o': // Rotation vers le haut
-			rotateX += 1.0f;
+			cameraPosition.rotateVertical(1);
 			break;
 		case 'p': // Rotation vers le bas
-			rotateX -= 1.0f;
+			cameraPosition.rotateVertical(-1);
 			break;
 		case 'l': // Rotation vers la gauche
-			rotateY += 1.0f;
+			camera.getPosition().rotateHorizontal(1);
 			break;
 		case 'm': // Rotation vers la droite
-			rotateY -= 1.0f;
+			camera.getPosition().rotateHorizontal(-1);
 			break;
 		case ';': // Rotation de la scène sur elle-même
 			rotateZ += 1.0f;
@@ -162,4 +147,7 @@ public class WorldRenderer implements GLEventListener, KeyListener {
 
 	}
 
+	public void addObject(Object3D object3D) {
+		this.renderables.add(object3D);
+	}
 }

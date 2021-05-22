@@ -7,6 +7,12 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://jitpack.io'
+        metadataSources {
+            artifact() //Look directly for artifact
+        }
+    }
 }
 
 dependencies {
@@ -14,6 +20,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation group: 'org.jogamp.jogl', name: 'jogl-all-main', version: '2.3.2'
     implementation group: 'org.jogamp.gluegen', name: 'gluegen-rt-main', version: '2.3.2'
+    implementation 'com.github.7Physics:Common:e0be617a00'
 }
 
 test {

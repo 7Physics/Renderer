@@ -4,9 +4,12 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
+import fr.setphysics.common.geom.Position;
+import fr.setphysics.common.geom.Vec3;
+import fr.setphysics.common.geom.shape.Cuboid;
 
 
-import java.awt.BorderLayout;
+import java.awt.*;
 
 import javax.swing.JFrame;
 
@@ -31,15 +34,26 @@ public class Main {
         glcanvas.setSize(1000, 650);
         
         // Ajout de la scène 3D du Renderer
-        final WorldRenderer world = new WorldRenderer();
-        glcanvas.addGLEventListener(world);
-		glcanvas.addKeyListener(world);
+        final Scene3D scene3D = new Scene3D(new Camera(new Position(Vec3.ZERO())));
+        glcanvas.addGLEventListener(scene3D);
+		glcanvas.addKeyListener(scene3D);
+
+		for(double i = 0; i <= 2*Math.PI; i+=Math.PI/10) {
+		    double x = Math.cos(i);
+		    double y = Math.sin(i);
+            scene3D.addObject(new Object3D(new Position(x, .5, y),
+                    new Cuboid(.1, .1, 1),
+                    new Color(156, 39, 176, 128),
+                    Color.WHITE)
+            );
+        }
 
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(glcanvas, BorderLayout.CENTER);
         frame.setSize(frame.getContentPane().getPreferredSize());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         
         FPSAnimator fps = new FPSAnimator(glcanvas, 300);
