@@ -11,14 +11,18 @@ import java.util.List;
 public class Object3D implements Renderable {
     private final Position position;
     private final Shape shape;
-    private final Color color;
-    private final Color edgeColor;
+    private Color color;
+    private Color edgeColor;
 
     public Object3D(Position position, Shape shape, Color color, Color edgeColor) {
         this.position = position;
         this.shape = shape;
         this.color = color;
         this.edgeColor = edgeColor;
+    }
+
+    public Object3D(Position position, Shape shape, Color color) {
+        this(position, shape, color, null);
     }
 
     public Object3D(Position position, Shape shape) {
@@ -33,13 +37,25 @@ public class Object3D implements Renderable {
         return color;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setEdgeColor(Color edgeColor) {
+        this.edgeColor = edgeColor;
+    }
+
+    public Color getEdgeColor() {
+        return edgeColor;
+    }
+
     @Override
     public void render(GL2 gl) {
         gl.glBegin(GL2.GL_QUADS);
 
         List<Vec3> vertices = shape.getVertices();
 
-        // Dessin du carré
+        // Dessin du carrï¿½
         gl.glColor4f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
         for (Vec3 vertex : vertices) {
             vertex = position.getCoords().add(vertex);
@@ -47,7 +63,11 @@ public class Object3D implements Renderable {
         }
         gl.glEnd();
 
-        // Dessin des arêtes
+        if(edgeColor == null) {
+            return;
+        }
+
+        // Dessin des arï¿½tes
         gl.glLineWidth(2);
         gl.glBegin(GL2.GL_LINES);
         gl.glColor4f(edgeColor.getRed()/255f, edgeColor.getGreen()/255f, edgeColor.getBlue()/255f, edgeColor.getAlpha()/255f);
