@@ -27,6 +27,10 @@ public class Camera implements Positionable {
         this.fov = fov;
     }
 
+    public void zoom(double factor) {
+        fov += factor;
+    }
+
     public void zoom() {
         fov--;
     }

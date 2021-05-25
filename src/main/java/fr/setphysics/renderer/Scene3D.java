@@ -1,7 +1,6 @@
 package fr.setphysics.renderer;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,18 +9,36 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.glu.GLU;
 
+import static fr.setphysics.renderer.Settings.*;
+
 
 /**
  * La classe WorldRenderer réalise l'affichage du monde 3D créé par l'utilisateur.
  * @author pierre
  *
  */
-public class Scene3D implements GLEventListener, KeyListener {
-	private float h;
+public class Scene3D implements GLEventListener, KeyListener, MouseWheelListener, MouseMotionListener {
+	/**
+	 * Ratio width/height des dimensions de la fenêtre
+	 */
+	private float frameSizeRatio;
 	private final List<Renderable> renderables = new ArrayList<>();
+
+	/**
+	 * Sauvegarde de la dernière position de la souris (pour la rotation)
+	 */
+	private int lastMouseX = -1, lastMouseY = -1;
+
+	/**
+	 * Dimensions de la fenêtre
+	 */
+	private int width, height;
 
 	private GLU glu = new GLU();
 
+	/**
+	 * Caméra observant la scène
+	 */
 	private Camera camera;
 
 	public Scene3D(Camera camera) {
@@ -64,20 +81,23 @@ public class Scene3D implements GLEventListener, KeyListener {
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		this.width = width;
+		this.height = height;
+
 		GL2 gl = drawable.getGL().getGL2();
 
 		if (height <= 0)
 			height = 1;
 
 		gl.glViewport(0, 0, width, height);
-		h = (float) width / (float) height;
+		frameSizeRatio = (float) width / (float) height;
 		refreshGlu(gl);
 	}
 
 	public void refreshGlu(GL2 gl) {
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
-		glu.gluPerspective(camera.getFov(), h, 1.0, 20.0);
+		glu.gluPerspective(camera.getFov(), frameSizeRatio, 1.0, 20.0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getX(),
@@ -94,12 +114,6 @@ public class Scene3D implements GLEventListener, KeyListener {
 		// Modification des attributs de la caméra selon la touche utilisée
 		int code = e.getKeyCode();
 		switch (code) {
-		case KeyEvent.VK_A: // ZOOM IN
-			this.camera.zoom();
-			break;
-		case KeyEvent.VK_E: // ZOOM OUT
-			this.camera.dezoom();
-			break;
 		case KeyEvent.VK_Q: // Déplacement vers la gauche
 			camera.moveLeft(.05);
 			break;
@@ -111,18 +125,6 @@ public class Scene3D implements GLEventListener, KeyListener {
 			break;
 		case KeyEvent.VK_Z: // Déplacement vers devant
 			camera.moveForward(.05);
-			break;
-		case KeyEvent.VK_O: // Rotation vers le haut
-			camera.rotateVertical(.02);
-			break;
-		case KeyEvent.VK_P: // Rotation vers le bas
-			camera.rotateVertical(-.02);
-			break;
-		case KeyEvent.VK_L: // Rotation vers la gauche
-			camera.getPosition().rotateHorizontal(-.02);
-			break;
-		case KeyEvent.VK_M: // Rotation vers la droite
-			camera.getPosition().rotateHorizontal(.02);
 			break;
 		case KeyEvent.VK_SHIFT:
 			camera.translateY(-.05);
@@ -149,5 +151,28 @@ public class Scene3D implements GLEventListener, KeyListener {
 
 	public void addObject(Object3D object3D) {
 		this.renderables.add(object3D);
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		camera.zoom(e.getPreciseWheelRotation()*MOUSE_SENSITIVITY_WHEEL);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		if(lastMouseX > 0) {
+			camera.rotate((x-lastMouseX)/(width*MOUSE_SENSITIVITY_X),
+					-(y-lastMouseY)/(height*MOUSE_SENSITIVITY_Y));
+		}
+		lastMouseX = x;
+		lastMouseY = y;
+	}
+
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		lastMouseX = -1;
 	}
 }

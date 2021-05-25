@@ -37,6 +37,8 @@ public class Main {
         final Scene3D scene3D = new Scene3D(camera);
         glcanvas.addGLEventListener(scene3D);
 		glcanvas.addKeyListener(scene3D);
+		glcanvas.addMouseWheelListener(scene3D);
+		glcanvas.addMouseMotionListener(scene3D);
 
         scene3D.addObject(new Object3D(new Position(.5, .5, 0),
                 new Cuboid(.1, .1, 1),
