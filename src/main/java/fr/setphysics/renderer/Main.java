@@ -36,7 +36,7 @@ public class Main {
         Camera camera = new Camera(new Position(-2, .5, 0));
         final Scene3D scene3D = new Scene3D(camera);
         glcanvas.addGLEventListener(scene3D);
-		glcanvas.addKeyListener(scene3D);
+		glcanvas.addKeyListener(scene3D.getKeyListener());
 		glcanvas.addMouseWheelListener(scene3D);
 		glcanvas.addMouseMotionListener(scene3D);
 

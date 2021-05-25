@@ -17,12 +17,14 @@ import static fr.setphysics.renderer.Settings.*;
  * @author pierre
  *
  */
-public class Scene3D implements GLEventListener, KeyListener, MouseWheelListener, MouseMotionListener {
+public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotionListener {
 	/**
 	 * Ratio width/height des dimensions de la fenêtre
 	 */
 	private float frameSizeRatio;
 	private final List<Renderable> renderables = new ArrayList<>();
+
+	private SceneKeyListener keyListener = new SceneKeyListener(this);
 
 	/**
 	 * Sauvegarde de la dernière position de la souris (pour la rotation)
@@ -46,6 +48,14 @@ public class Scene3D implements GLEventListener, KeyListener, MouseWheelListener
 		renderables.add(new Ground(4, .2));
 	}
 
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public SceneKeyListener getKeyListener() {
+		return keyListener;
+	}
+
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		// Récupération du contexte OpenGL
@@ -64,6 +74,7 @@ public class Scene3D implements GLEventListener, KeyListener, MouseWheelListener
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
+		keyListener.update();
 		// Récupération du contexte OpenGL
 		final GL2 gl = drawable.getGL().getGL2();
         gl.glLoadIdentity();
@@ -109,46 +120,6 @@ public class Scene3D implements GLEventListener, KeyListener, MouseWheelListener
 				0, 1, 0);
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// Modification des attributs de la caméra selon la touche utilisée
-		int code = e.getKeyCode();
-		switch (code) {
-		case KeyEvent.VK_Q: // Déplacement vers la gauche
-			camera.moveLeft(.05);
-			break;
-		case KeyEvent.VK_D: // Déplacement vers la droite
-			camera.moveRight(.05);
-			break;
-		case KeyEvent.VK_S: // Déplacement vers derrière
-			camera.moveBackward(.05);
-			break;
-		case KeyEvent.VK_Z: // Déplacement vers devant
-			camera.moveForward(.05);
-			break;
-		case KeyEvent.VK_SHIFT:
-			camera.translateY(-.05);
-			break;
-		case KeyEvent.VK_SPACE:
-			camera.translateY(.05);
-			break;
-		default:
-			break;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void addObject(Object3D object3D) {
 		this.renderables.add(object3D);
 	}
@@ -163,8 +134,8 @@ public class Scene3D implements GLEventListener, KeyListener, MouseWheelListener
 		int x = e.getX();
 		int y = e.getY();
 		if(lastMouseX > 0) {
-			camera.rotate((x-lastMouseX)/(width*MOUSE_SENSITIVITY_X),
-					-(y-lastMouseY)/(height*MOUSE_SENSITIVITY_Y));
+			camera.rotate((x-lastMouseX)/(width/MOUSE_SENSITIVITY_X),
+					-(y-lastMouseY)/(height/MOUSE_SENSITIVITY_Y));
 		}
 		lastMouseX = x;
 		lastMouseY = y;
