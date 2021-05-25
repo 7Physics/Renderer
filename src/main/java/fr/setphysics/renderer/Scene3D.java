@@ -150,4 +150,8 @@ public class Scene3D implements GLEventListener, KeyListener {
 	public void addObject(Object3D object3D) {
 		this.renderables.add(object3D);
 	}
+
+	public void removeObject(Object3D object3D) {
+		this.renderables.remove(object3D);
+	}
 }
