@@ -13,20 +13,20 @@ public class Ground implements Renderable {
 
     @Override
     public void render(GL2 gl) {
-        // Création de la zone "sol" grisée
+        // CrÃ©ation de la zone "sol" grisÃ©e
         gl.glBegin(GL2.GL_QUADS);
 
         // Couleur grise
         gl.glColor4f(0.3f, 0.3f, 0.3f, 0.8f);
 
-        // Placement des points du carré
+        // Placement des points du carrÃ©
         gl.glVertex3d(width/2, 0f, width/2);
         gl.glVertex3d(width/2, 0f, -width/2);
         gl.glVertex3d(-width/2, 0f, -width/2);
         gl.glVertex3d(-width/2, 0f, width/2);
         gl.glEnd();
 
-        // Création des lignes de la grille
+        // CrÃ©ation des lignes de la grille
         gl.glBegin(GL2.GL_LINES);
 
         // Couleur Blanche

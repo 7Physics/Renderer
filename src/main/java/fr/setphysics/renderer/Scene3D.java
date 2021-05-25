@@ -22,18 +22,10 @@ public class Scene3D implements GLEventListener, KeyListener {
 
 	private GLU glu = new GLU();
 
-	/**
-	 * Attributs représentants les valeurs de rotation selon les 3 axes.
-	 * Ces valeurs sont utilisées afin de manipuler la caméra.
-	 */
-	private float rotateZ;
-
 	private Camera camera;
-	private Position cameraPosition;
 
 	public Scene3D(Camera camera) {
 		this.camera = camera;
-		this.cameraPosition = camera.getPosition();
 		renderables.add(new Ground(4, .2));
 	}
 
@@ -58,12 +50,14 @@ public class Scene3D implements GLEventListener, KeyListener {
 		// Récupération du contexte OpenGL
 		final GL2 gl = drawable.getGL().getGL2();
         gl.glLoadIdentity();
-        
-        // Déplacement de la caméra selon les entrées utilisateurs
-        gl.glTranslated(cameraPosition.getX(), cameraPosition.getY(), camera.getZoomFactor()-5.0f);
-        gl.glRotated(cameraPosition.getHorizontalAngle(), 1.0f, 0.0f, 0.0f);
-        gl.glRotated(cameraPosition.getVerticalAngle(), 0.0f, 1.0f, 0.0f);
-        gl.glRotatef(rotateZ, 0.0f, 0.0f, 1.0f);
+
+        glu.gluLookAt(camera.getX(),
+				camera.getY(),
+				camera.getZ(),
+				camera.getLookAtX(),
+				camera.getLookAtY(),
+				camera.getLookAtZ(),
+				0, 1, 0);
 
         // Clear de la scène 3D
         gl.glClearColor(0.18f, 0.3f, 0.56f, 1.0f);
@@ -94,45 +88,47 @@ public class Scene3D implements GLEventListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// Modification des attributs de la caméra selon la touche utilisée
-		switch (e.getKeyChar()) {
-		case 'a': // ZOOM IN
+		int code = e.getKeyCode();
+		switch (code) {
+		case KeyEvent.VK_A: // ZOOM IN
 			this.camera.zoom();
 			break;
-		case 'e': // ZOOM OUT
+		case KeyEvent.VK_E: // ZOOM OUT
 			this.camera.dezoom();
 			break;
-		case 'q': // Déplacement vers la gauche
-			cameraPosition.translateX(.1);
+		case KeyEvent.VK_Q: // Déplacement vers la gauche
+			camera.moveLeft(.05);
 			break;
-		case 'd': // Déplacement vers la droite
-			cameraPosition.translateX(-.1);
+		case KeyEvent.VK_D: // Déplacement vers la droite
+			camera.moveRight(.05);
 			break;
-		case 's': // Déplacement vers le bas
-			cameraPosition.translateY(.1);
+		case KeyEvent.VK_S: // Déplacement vers derrière
+			camera.moveBackward(.05);
 			break;
-		case 'z': // Déplacement vers le haut
-			cameraPosition.translateY(-.1);
+		case KeyEvent.VK_Z: // Déplacement vers devant
+			camera.moveForward(.05);
 			break;
-		case 'o': // Rotation vers le haut
-			cameraPosition.rotateVertical(1);
+		case KeyEvent.VK_O: // Rotation vers le haut
+			camera.rotateVertical(.02);
 			break;
-		case 'p': // Rotation vers le bas
-			cameraPosition.rotateVertical(-1);
+		case KeyEvent.VK_P: // Rotation vers le bas
+			camera.rotateVertical(-.02);
 			break;
-		case 'l': // Rotation vers la gauche
-			camera.getPosition().rotateHorizontal(1);
+		case KeyEvent.VK_L: // Rotation vers la gauche
+			camera.getPosition().rotateHorizontal(-.02);
 			break;
-		case 'm': // Rotation vers la droite
-			camera.getPosition().rotateHorizontal(-1);
+		case KeyEvent.VK_M: // Rotation vers la droite
+			camera.getPosition().rotateHorizontal(.02);
 			break;
-		case ';': // Rotation de la scène sur elle-même
-			rotateZ += 1.0f;
+		case KeyEvent.VK_SHIFT:
+			camera.translateY(-.05);
 			break;
-		case ':': // Rotation de la scène sur elle-même
-			rotateZ -= 1.0f;
+		case KeyEvent.VK_SPACE:
+			camera.translateY(.05);
+			break;
+		default:
 			break;
 		}
-
 	}
 
 	@Override
