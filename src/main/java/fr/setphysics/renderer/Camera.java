@@ -9,7 +9,7 @@ import fr.setphysics.common.geom.Vec3;
  */
 public class Camera implements Positionable {
     private final Position position;
-    private double zoomFactor;
+    private double fov = 45;
 
     public Camera(Position position) {
         this.position = position;
@@ -19,20 +19,20 @@ public class Camera implements Positionable {
         return position;
     }
 
+    public double getFov() {
+        return fov;
+    }
+
+    public void setFov(double fov) {
+        this.fov = fov;
+    }
+
     public void zoom() {
-        this.zoomFactor += .1;
+        fov--;
     }
 
     public void dezoom() {
-        this.zoomFactor -= .1;
-    }
-
-    public void setZoomFactor(double zoomFactor) {
-        this.zoomFactor = zoomFactor;
-    }
-
-    public double getZoomFactor() {
-        return zoomFactor;
+        fov++;
     }
 
     public void moveForward(double offset) {

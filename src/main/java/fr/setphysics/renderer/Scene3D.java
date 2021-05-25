@@ -9,7 +9,6 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.glu.GLU;
-import fr.setphysics.common.geom.Position;
 
 
 /**
@@ -18,6 +17,7 @@ import fr.setphysics.common.geom.Position;
  *
  */
 public class Scene3D implements GLEventListener, KeyListener {
+	private float h;
 	private final List<Renderable> renderables = new ArrayList<>();
 
 	private GLU glu = new GLU();
@@ -51,13 +51,7 @@ public class Scene3D implements GLEventListener, KeyListener {
 		final GL2 gl = drawable.getGL().getGL2();
         gl.glLoadIdentity();
 
-        glu.gluLookAt(camera.getX(),
-				camera.getY(),
-				camera.getZ(),
-				camera.getLookAtX(),
-				camera.getLookAtY(),
-				camera.getLookAtZ(),
-				0, 1, 0);
+        refreshGlu(gl);
 
         // Clear de la scène 3D
         gl.glClearColor(0.18f, 0.3f, 0.56f, 1.0f);
@@ -75,14 +69,24 @@ public class Scene3D implements GLEventListener, KeyListener {
 		if (height <= 0)
 			height = 1;
 
-		final float h = (float) width / (float) height;
 		gl.glViewport(0, 0, width, height);
+		h = (float) width / (float) height;
+		refreshGlu(gl);
+	}
+
+	public void refreshGlu(GL2 gl) {
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
-
-		glu.gluPerspective(45.0f, h, 1.0, 20.0);
+		glu.gluPerspective(camera.getFov(), h, 1.0, 20.0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
+		glu.gluLookAt(camera.getX(),
+				camera.getY(),
+				camera.getZ(),
+				camera.getLookAtX(),
+				camera.getLookAtY(),
+				camera.getLookAtZ(),
+				0, 1, 0);
 	}
 
 	@Override
