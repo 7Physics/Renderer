@@ -8,7 +8,7 @@ import fr.setphysics.common.geom.Vec3;
 import java.awt.*;
 import java.util.List;
 
-public class Object3D implements Renderable {
+public class Object3D implements Renderable, Positionable {
     private final Position position;
     private final Shape shape;
     private Color color;
@@ -27,6 +27,11 @@ public class Object3D implements Renderable {
 
     public Object3D(Position position, Shape shape) {
         this(position, shape, Color.GRAY, Color.WHITE);
+    }
+
+    @Override
+    public Position getPosition() {
+        return position;
     }
 
     public Shape getShape() {
@@ -55,7 +60,8 @@ public class Object3D implements Renderable {
 
         List<Vec3> vertices = shape.getVertices();
 
-        // Dessin du carr�
+
+        // Dessin du carré
         gl.glColor4f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
         for (Vec3 vertex : vertices) {
             vertex = position.getCoords().add(vertex);
@@ -67,7 +73,8 @@ public class Object3D implements Renderable {
             return;
         }
 
-        // Dessin des ar�tes
+        // Dessin des aretes
+
         gl.glLineWidth(2);
         gl.glBegin(GL2.GL_LINES);
         gl.glColor4f(edgeColor.getRed()/255f, edgeColor.getGreen()/255f, edgeColor.getBlue()/255f, edgeColor.getAlpha()/255f);

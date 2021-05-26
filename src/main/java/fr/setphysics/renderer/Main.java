@@ -5,7 +5,6 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 import fr.setphysics.common.geom.Position;
-import fr.setphysics.common.geom.Vec3;
 import fr.setphysics.common.geom.shape.Cuboid;
 
 
@@ -34,19 +33,24 @@ public class Main {
         glcanvas.setSize(1000, 650);
         
         // Ajout de la scène 3D du Renderer
-        final Scene3D scene3D = new Scene3D(new Camera(new Position(Vec3.ZERO())));
+        Camera camera = new Camera(new Position(-2, .5, 0));
+        final Scene3D scene3D = new Scene3D(camera);
         glcanvas.addGLEventListener(scene3D);
-		glcanvas.addKeyListener(scene3D);
+		glcanvas.addKeyListener(scene3D.getKeyListener());
+		glcanvas.addMouseWheelListener(scene3D);
+		glcanvas.addMouseMotionListener(scene3D);
 
-		for(double i = 0; i <= 2*Math.PI; i+=Math.PI/10) {
-		    double x = Math.cos(i);
-		    double y = Math.sin(i);
-            scene3D.addObject(new Object3D(new Position(x, .5, y),
-                    new Cuboid(.1, .1, 1),
-                    new Color(156, 39, 176, 128),
-                    Color.WHITE)
-            );
-        }
+        scene3D.addObject(new Object3D(new Position(.5, .5, 0),
+                new Cuboid(.1, .1, 1),
+                Color.RED,
+                Color.WHITE)
+        );
+
+        scene3D.addObject(new Object3D(new Position(0, .5, .5),
+                new Cuboid(.1, .1, 1),
+                Color.GREEN,
+                Color.WHITE)
+        );
 
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
