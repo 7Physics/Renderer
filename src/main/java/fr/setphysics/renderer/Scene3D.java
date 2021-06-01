@@ -2,6 +2,7 @@ package fr.setphysics.renderer;
 
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.jogamp.opengl.GL2;
@@ -17,7 +18,7 @@ import static fr.setphysics.renderer.Settings.*;
  * @author pierre
  *
  */
-public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotionListener {
+public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotionListener, Iterable<Object3D> {
 	/**
 	 * Ratio width/height des dimensions de la fenêtre
 	 */
@@ -65,6 +66,7 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
         gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_LINE_SMOOTH);
 		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
@@ -145,5 +147,33 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		lastMouseX = -1;
+	}
+
+	@Override
+	public Iterator<Object3D> iterator() {
+		return new ObjectIterator(this);
+	}
+	
+	private class ObjectIterator implements Iterator<Object3D>{
+		private Scene3D scene;
+		private int index;
+		
+		public ObjectIterator(Scene3D scene) {
+			this.scene = scene;
+			this.index = 1;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return index < this.scene.renderables.size();
+		}
+
+		@Override
+		public Object3D next() {
+			Object3D res = (Object3D) this.scene.renderables.get(this.index);
+			this.index++;
+			return res;
+		}
+		
 	}
 }
