@@ -27,6 +27,7 @@ public class Ground implements Renderable {
         gl.glEnd();
 
         // Création des lignes de la grille
+        gl.glLineWidth(4);
         gl.glBegin(GL2.GL_LINES);
 
         // Couleur Blanche

@@ -75,7 +75,7 @@ public class Object3D implements Renderable, Positionable {
 
         // Dessin des aretes
 
-        gl.glLineWidth(2);
+        gl.glLineWidth(4);
         gl.glBegin(GL2.GL_LINES);
         gl.glColor4f(edgeColor.getRed()/255f, edgeColor.getGreen()/255f, edgeColor.getBlue()/255f, edgeColor.getAlpha()/255f);
         Vec3 last = null;
