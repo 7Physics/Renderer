@@ -176,4 +176,8 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 		}
 		
 	}
+
+	public void removeObject(Object3D object3D) {
+		this.renderables.remove(object3D);
+	}
 }
