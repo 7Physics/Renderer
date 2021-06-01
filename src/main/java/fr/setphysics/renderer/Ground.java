@@ -27,7 +27,7 @@ public class Ground implements Renderable {
         gl.glEnd();
 
         // Création des lignes de la grille
-        gl.glLineWidth(4);
+        gl.glLineWidth(1);
         gl.glBegin(GL2.GL_LINES);
 
         // Couleur Blanche
@@ -35,11 +35,11 @@ public class Ground implements Renderable {
 
         // Placement de chaque ligne
         for (double i = -width/2; i <= width/2; i+= lineGap) {
-            gl.glVertex3d(i, 0f, width/2);
-            gl.glVertex3d(i, 0f, -width/2);
+            gl.glVertex3d(i, 0.01f, width/2);
+            gl.glVertex3d(i, 0.01f, -width/2);
 
-            gl.glVertex3d(width/2, 0f, i);
-            gl.glVertex3d(-width/2, 0f, i);
+            gl.glVertex3d(width/2, 0.01f, i);
+            gl.glVertex3d(-width/2, 0.01f, i);
         }
         gl.glEnd();
     }

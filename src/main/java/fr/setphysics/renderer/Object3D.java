@@ -75,12 +75,16 @@ public class Object3D implements Renderable, Positionable {
 
         // Dessin des aretes
 
-        gl.glLineWidth(4);
+        gl.glLineWidth(2);
         gl.glBegin(GL2.GL_LINES);
         gl.glColor4f(edgeColor.getRed()/255f, edgeColor.getGreen()/255f, edgeColor.getBlue()/255f, edgeColor.getAlpha()/255f);
         Vec3 last = null;
         for (Vec3 vertex : vertices) {
-            vertex = position.getCoords().add(vertex);
+            vertex = vertex.clone();
+            vertex.addX(vertex.getX()/Math.abs(vertex.getX())*0.002);
+            vertex.addY(vertex.getY()/Math.abs(vertex.getY())*0.002);
+            vertex.addZ(vertex.getZ()/Math.abs(vertex.getZ())*0.002);
+            vertex = position.getCoords().add(vertex.clone());
             if(last != null) {
                 gl.glVertex3d(last.getX(), last.getY(), last.getZ());
                 gl.glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
@@ -89,7 +93,10 @@ public class Object3D implements Renderable, Positionable {
         }
         if(last != null) {
             gl.glVertex3d(last.getX(), last.getY(), last.getZ());
-            Vec3 vertex = position.getCoords().add(vertices.get(0));
+            Vec3 vertex = position.getCoords().add(vertices.get(0).clone());
+            vertex.addX(vertex.getX()/Math.abs(vertex.getX())*0.002);
+            vertex.addY(vertex.getY()/Math.abs(vertex.getY())*0.002);
+            vertex.addZ(vertex.getZ()/Math.abs(vertex.getZ())*0.002);
             gl.glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
         }
         gl.glEnd();
