@@ -1,5 +1,6 @@
 package fr.setphysics.renderer;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,8 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.FPSAnimator;
+import fr.setphysics.common.geom.Position;
+import fr.setphysics.common.geom.Shape;
 
 
 /**
@@ -114,8 +117,17 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 				0, 1, 0);
 	}
 
-	public void addObject(Object3D object3D) {
+	public Object3D addObject(Object3D object3D) {
 		this.renderables.add(object3D);
+		return object3D;
+	}
+
+	public Object3D addObject(Shape shape, Position position, Color color, Color edgeColor) {
+		return addObject(new Object3D(shape, position, color, edgeColor));
+	}
+
+	public Object3D addObject(Shape shape, Position position, Color color) {
+		return addObject(new Object3D(shape, position, color));
 	}
 
 	@Override

@@ -30,17 +30,9 @@ public class Main {
         final Scene3D scene3D = new Scene3D(camera);
         scene3D.setSize(1000, 650);
 
-        scene3D.addObject(new Object3D(new Position(.5, .5, 0),
-                new Cuboid(.1, .1, 1),
-                Color.RED,
-                Color.WHITE)
-        );
+        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(.5, .5, 0), Color.RED, Color.BLACK);
 
-        scene3D.addObject(new Object3D(new Position(0, .5, .5),
-                new Cuboid(.1, .1, 1),
-                Color.GREEN,
-                Color.WHITE)
-        );
+        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(0, .5, .5), Color.GREEN, Color.BLACK);
 
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
