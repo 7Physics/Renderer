@@ -56,12 +56,11 @@ public class Object3D implements Renderable, Positionable {
 
     @Override
     public void render(GL2 gl) {
-        gl.glBegin(GL2.GL_QUADS);
+        gl.glBegin(GL2.GL_TRIANGLES);
 
         List<Vec3> vertices = shape.getVertices();
 
 
-        // Dessin du carré
         gl.glColor4f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
         for (Vec3 vertex : vertices) {
             vertex = position.getCoords().add(vertex);

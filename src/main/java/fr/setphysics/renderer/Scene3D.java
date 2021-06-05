@@ -12,10 +12,9 @@ import com.jogamp.opengl.glu.GLU;
 
 import static fr.setphysics.renderer.Settings.*;
 
-
 /**
- * La classe WorldRenderer réalise l'affichage du monde 3D créé par l'utilisateur.
- * @author pierre
+ * La classe WorldRenderer réalise l'affichage du monde 3D créé par
+ * l'utilisateur.
  *
  */
 public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotionListener, Iterable<Object3D> {
@@ -62,12 +61,12 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 		// Récupération du contexte OpenGL
 		final GL2 gl = drawable.getGL().getGL2();
 
-        // Activation de la transparence
-        gl.glEnable(GL2.GL_BLEND);
+		// Activation de la transparence
+		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_LINE_SMOOTH);
 		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
 		gl.glEnable(GL2.GL_DEPTH_TEST);
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override
@@ -79,13 +78,13 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 		keyListener.update();
 		// Récupération du contexte OpenGL
 		final GL2 gl = drawable.getGL().getGL2();
-        gl.glLoadIdentity();
+		gl.glLoadIdentity();
 
-        refreshGlu(gl);
+		refreshGlu(gl);
 
-        // Clear de la scène 3D
-        gl.glClearColor(0.18f, 0.3f, 0.56f, 1.0f);
-        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+		// Clear de la scène 3D
+		gl.glClearColor(0.18f, 0.3f, 0.56f, 1.0f);
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
 		for (Renderable renderable : renderables) {
 			renderable.render(gl);
@@ -113,13 +112,8 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 		glu.gluPerspective(camera.getFov(), frameSizeRatio, 1.0, 20.0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		glu.gluLookAt(camera.getX(),
-				camera.getY(),
-				camera.getZ(),
-				camera.getLookAtX(),
-				camera.getLookAtY(),
-				camera.getLookAtZ(),
-				0, 1, 0);
+		glu.gluLookAt(camera.getX(), camera.getY(), camera.getZ(), camera.getLookAtX(), camera.getLookAtY(),
+				camera.getLookAtZ(), 0, 1, 0);
 	}
 
 	public void addObject(Object3D object3D) {
@@ -128,21 +122,20 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		camera.zoom(e.getPreciseWheelRotation()*MOUSE_SENSITIVITY_WHEEL);
+		camera.zoom(e.getPreciseWheelRotation() * MOUSE_SENSITIVITY_WHEEL);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		if(lastMouseX > 0) {
-			camera.rotate((x-lastMouseX)/(width/MOUSE_SENSITIVITY_X),
-					-(y-lastMouseY)/(height/MOUSE_SENSITIVITY_Y));
+		if (lastMouseX > 0) {
+			camera.rotate((x - lastMouseX) / (width / MOUSE_SENSITIVITY_X),
+					-(y - lastMouseY) / (height / MOUSE_SENSITIVITY_Y));
 		}
 		lastMouseX = x;
 		lastMouseY = y;
 	}
-
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -153,11 +146,11 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 	public Iterator<Object3D> iterator() {
 		return new ObjectIterator(this);
 	}
-	
-	private class ObjectIterator implements Iterator<Object3D>{
+
+	private class ObjectIterator implements Iterator<Object3D> {
 		private Scene3D scene;
 		private int index;
-		
+
 		public ObjectIterator(Scene3D scene) {
 			this.scene = scene;
 			this.index = 1;
@@ -174,7 +167,7 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 			this.index++;
 			return res;
 		}
-		
+
 	}
 
 	public void removeObject(Object3D object3D) {
