@@ -80,11 +80,9 @@ public class Object3D implements Renderable, Positionable {
         gl.glColor4f(edgeColor.getRed()/255f, edgeColor.getGreen()/255f, edgeColor.getBlue()/255f, edgeColor.getAlpha()/255f);
         Vec3 last = null;
         for (Vec3 vertex : vertices) {
-            vertex = vertex.clone();
-            vertex.addX(vertex.getX()/Math.abs(vertex.getX())*0.002);
-            vertex.addY(vertex.getY()/Math.abs(vertex.getY())*0.002);
-            vertex.addZ(vertex.getZ()/Math.abs(vertex.getZ())*0.002);
-            vertex = position.getCoords().add(vertex.clone());
+            vertex = increase(vertex.clone(), 0.002f);
+            vertex = position.getCoords().add(vertex);
+
             if(last != null) {
                 gl.glVertex3d(last.getX(), last.getY(), last.getZ());
                 gl.glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
@@ -93,13 +91,20 @@ public class Object3D implements Renderable, Positionable {
         }
         if(last != null) {
             gl.glVertex3d(last.getX(), last.getY(), last.getZ());
-            Vec3 vertex = position.getCoords().add(vertices.get(0).clone());
-            vertex.addX(vertex.getX()/Math.abs(vertex.getX())*0.002);
-            vertex.addY(vertex.getY()/Math.abs(vertex.getY())*0.002);
-            vertex.addZ(vertex.getZ()/Math.abs(vertex.getZ())*0.002);
+            Vec3 vertex = increase(position.getCoords().add(vertices.get(0)), 0.002f);
             gl.glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
         }
         gl.glEnd();
 
+    }
+
+    private Vec3 increase(Vec3 vertex, float factor) {
+        if(vertex.getX() != 0)
+            vertex.addX(vertex.getX()/Math.abs(vertex.getX())*factor);
+        if(vertex.getY() != 0)
+            vertex.addY(vertex.getY()/Math.abs(vertex.getY())*factor);
+        if(vertex.getZ() != 0)
+            vertex.addZ(vertex.getZ()/Math.abs(vertex.getZ())*factor);
+        return vertex;
     }
 }
