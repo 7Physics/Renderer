@@ -6,7 +6,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.shape.Cuboid;
-
+import fr.setphysics.common.geom.shape.Sphere;
 
 import java.awt.*;
 
@@ -51,6 +51,11 @@ public class Main {
                 Color.GREEN,
                 Color.WHITE)
         );
+        
+        scene3D.addObject(new Object3D(new Position(2, 2, 2),
+        		new Sphere(1, 3),
+        		Color.GREEN,
+        		Color.WHITE));
 
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
