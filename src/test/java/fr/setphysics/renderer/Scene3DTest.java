@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.CompletableFuture;
 
+// Test de la sc√®ne 3D
 public class Scene3DTest {
 
     private static Camera camera = new Camera(new Position(Vec3.ZERO()));
@@ -23,20 +24,20 @@ public class Scene3DTest {
     @BeforeAll
     public static void setUp() {
 
-        // RÈcupÈration des informations liÈes au contexte OpenGL
+        // R√©cup√©ration des informations li√©es au contexte OpenGL
         final GLProfile profile = GLProfile.get( GLProfile.GL2 );
         GLCapabilities capabilities = new GLCapabilities( profile );
 
-        // CrÈation d'un canvas OpenGL (Èquivalent ‡ un JPanel)
+        // Cr√©ation d'un canvas OpenGL (√©quivalent √† un JPanel)
         final GLCanvas glcanvas = new GLCanvas( capabilities );
         glcanvas.setSize(1000, 650);
 
-        // Ajout de la scËne 3D du Renderer
+        // Ajout de la sc√®ne 3D du Renderer
         scene = new Scene3D(camera);
         glcanvas.addGLEventListener(scene);
         glcanvas.addKeyListener(scene);
 
-        // CrÈation de la frame
+        // Cr√©ation de la frame
         frame = new JFrame ("7Physics");
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(glcanvas, BorderLayout.CENTER);
