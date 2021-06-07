@@ -1,4 +1,4 @@
-package fr.setphysics.renderer;
+package fr.setphysics.rendererTest;
 
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
@@ -7,6 +7,10 @@ import com.jogamp.opengl.util.FPSAnimator;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.Vec3;
 import fr.setphysics.common.geom.shape.Cuboid;
+import fr.setphysics.renderer.Camera;
+import fr.setphysics.renderer.Object3D;
+import fr.setphysics.renderer.Scene3D;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +39,6 @@ public class Scene3DTest {
         // Ajout de la scène 3D du Renderer
         scene = new Scene3D(camera);
         glcanvas.addGLEventListener(scene);
-        glcanvas.addKeyListener(scene);
 
         // Création de la frame
         frame = new JFrame ("7Physics");
@@ -52,8 +55,8 @@ public class Scene3DTest {
     @Test
     public synchronized void removeObjectFromScene() throws InterruptedException {
         frame.setTitle("Remove object from scene");
-        Object3D cube = new Object3D(new Position(Vec3.ZERO().addY(.25)),
-                new Cuboid(0.5, 0.5, 0.5));
+        Object3D cube = new Object3D(new Cuboid(0.5, 0.5, 0.5),
+                new Position(Vec3.ZERO().addY(.25)));
         scene.addObject(cube);
         Thread.sleep(1000);
         scene.removeObject(cube);
