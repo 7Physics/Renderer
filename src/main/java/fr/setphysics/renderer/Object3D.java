@@ -15,19 +15,19 @@ public class Object3D implements Renderable, Positionable {
     private Color color;
     private Color edgeColor;
 
-    public Object3D(Position position, Shape shape, Color color, Color edgeColor) {
-        this.position = position;
+    public Object3D(Shape shape, Position position, Color color, Color edgeColor) {
         this.shape = shape;
+        this.position = position;
         this.color = color;
         this.edgeColor = edgeColor;
     }
 
-    public Object3D(Position position, Shape shape, Color color) {
-        this(position, shape, color, null);
+    public Object3D(Shape shape, Position position, Color color) {
+        this(shape, position, color, null);
     }
 
-    public Object3D(Position position, Shape shape) {
-        this(position, shape, Color.GRAY, Color.WHITE);
+    public Object3D(Shape shape, Position position) {
+        this(shape, position, Color.GRAY, Color.WHITE);
     }
 
     @Override

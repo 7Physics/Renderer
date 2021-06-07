@@ -1,23 +1,23 @@
 package fr.setphysics.renderer;
 
-import java.awt.event.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.*;
+import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
-
-import static fr.setphysics.renderer.Settings.*;
+import com.jogamp.opengl.util.FPSAnimator;
+import fr.setphysics.common.geom.Position;
+import fr.setphysics.common.geom.Shape;
 
 /**
  * La classe WorldRenderer réalise l'affichage du monde 3D créé par
  * l'utilisateur.
  *
  */
-public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotionListener, Iterable<Object3D> {
+public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Object3D> {
 	/**
 	 * Ratio width/height des dimensions de la fenêtre
 	 */
@@ -25,16 +25,7 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 	private final List<Renderable> renderables = new ArrayList<>();
 
 	private SceneKeyListener keyListener = new SceneKeyListener(this);
-
-	/**
-	 * Sauvegarde de la dernière position de la souris (pour la rotation)
-	 */
-	private int lastMouseX = -1, lastMouseY = -1;
-
-	/**
-	 * Dimensions de la fenêtre
-	 */
-	private int width, height;
+	private SceneMouseListener mouseListener = new SceneMouseListener(this);
 
 	private GLU glu = new GLU();
 
@@ -44,16 +35,21 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 	private Camera camera;
 
 	public Scene3D(Camera camera) {
+		super(new GLCapabilities( GLProfile.get( GLProfile.GL2 ) ));
 		this.camera = camera;
 		renderables.add(new Ground(4, .2));
+
+		addGLEventListener(this);
+		addKeyListener(keyListener);
+		addMouseWheelListener(mouseListener);
+		addMouseMotionListener(mouseListener);
+
+		FPSAnimator fps = new FPSAnimator(this, 300);
+		fps.start();
 	}
 
 	public Camera getCamera() {
 		return camera;
-	}
-
-	public SceneKeyListener getKeyListener() {
-		return keyListener;
 	}
 
 	@Override
@@ -93,8 +89,7 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		this.width = width;
-		this.height = height;
+		super.reshape(x, y, width, height);
 
 		GL2 gl = drawable.getGL().getGL2();
 
@@ -116,30 +111,17 @@ public class Scene3D implements GLEventListener, MouseWheelListener, MouseMotion
 				camera.getLookAtZ(), 0, 1, 0);
 	}
 
-	public void addObject(Object3D object3D) {
+	public Object3D addObject(Object3D object3D) {
 		this.renderables.add(object3D);
+		return object3D;
 	}
 
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		camera.zoom(e.getPreciseWheelRotation() * MOUSE_SENSITIVITY_WHEEL);
+	public Object3D addObject(Shape shape, Position position, Color color, Color edgeColor) {
+		return addObject(new Object3D(shape, position, color, edgeColor));
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		if (lastMouseX > 0) {
-			camera.rotate((x - lastMouseX) / (width / MOUSE_SENSITIVITY_X),
-					-(y - lastMouseY) / (height / MOUSE_SENSITIVITY_Y));
-		}
-		lastMouseX = x;
-		lastMouseY = y;
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		lastMouseX = -1;
+	public Object3D addObject(Shape shape, Position position, Color color) {
+		return addObject(new Object3D(shape, position, color));
 	}
 
 	@Override

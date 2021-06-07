@@ -24,48 +24,23 @@ public class Main {
 	 * @param args: Aucun paramètre n'est actuellement supporté
 	 */
     public static void main( String[] args ) {
-        // Récupération des informations liées au contexte OpenGL
-        final GLProfile profile = GLProfile.get( GLProfile.GL2 );
-        GLCapabilities capabilities = new GLCapabilities( profile );
-
-        // Création d'un canvas OpenGL (équivalent à un JPanel)
-        final GLCanvas glcanvas = new GLCanvas( capabilities );
-        glcanvas.setSize(1000, 650);
-        
-        // Ajout de la scène 3D du Renderer
         Camera camera = new Camera(new Position(-2, .5, 0));
+
+        // Ajout de la scène 3D du Renderer
         final Scene3D scene3D = new Scene3D(camera);
-        glcanvas.addGLEventListener(scene3D);
-		glcanvas.addKeyListener(scene3D.getKeyListener());
-		glcanvas.addMouseWheelListener(scene3D);
-		glcanvas.addMouseMotionListener(scene3D);
+        scene3D.setSize(1000, 650);
 
-        scene3D.addObject(new Object3D(new Position(.5, .5, 0),
-                new Cuboid(.1, .1, 1),
-                Color.RED,
-                Color.WHITE)
-        );
+        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(.5, .5, 0), Color.RED, Color.BLACK);
 
-        scene3D.addObject(new Object3D(new Position(0, .5, .5),
-                new Cuboid(.1, .1, 1),
-                Color.GREEN,
-                Color.WHITE)
-        );
-        
-        scene3D.addObject(new Object3D(new Position(2, 2, 2),
-        		new Sphere(1, 3),
-        		Color.GREEN,
-        		Color.WHITE));
+        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(0, .5, .5), Color.GREEN, Color.BLACK);
+
 
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
         frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(glcanvas, BorderLayout.CENTER);
+        frame.getContentPane().add(scene3D, BorderLayout.CENTER);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        
-        FPSAnimator fps = new FPSAnimator(glcanvas, 300);
-        fps.start();
     }
 }
