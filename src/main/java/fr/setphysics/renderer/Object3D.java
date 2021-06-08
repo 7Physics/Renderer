@@ -1,6 +1,7 @@
 package fr.setphysics.renderer;
 
 import com.jogamp.opengl.GL2;
+import fr.setphysics.common.geom.Bounds;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.Shape;
 import fr.setphysics.common.geom.Vec3;
@@ -60,10 +61,11 @@ public class Object3D implements Renderable, Positionable {
 
         List<Vec3> vertices = shape.getVertices();
 
-
+        Bounds bounds = shape.getBounds();
         // Dessin du carré
-        gl.glColor4f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
         for (Vec3 vertex : vertices) {
+            double factor = (vertex.getY()-bounds.getMinY())/ bounds.getHeight();
+            gl.glColor4d((color.getRed()/255f)*factor, (color.getGreen()/255f)*factor, (color.getBlue()/255f)*factor, color.getAlpha()/255f);
             vertex = position.getCoords().add(vertex);
             gl.glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
         }

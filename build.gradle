@@ -22,7 +22,7 @@ dependencies {
 
     api group: 'org.jogamp.jogl', name: 'jogl-all-main', version: '2.3.2'
     api group: 'org.jogamp.gluegen', name: 'gluegen-rt-main', version: '2.3.2'
-    implementation 'com.github.7Physics:Common:master-SNAPSHOT'
+    implementation 'com.github.7Physics:Common:bc208b2579'
 }
 
 test {

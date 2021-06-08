@@ -1,14 +1,11 @@
 package fr.setphysics.renderer;
 
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.util.FPSAnimator;
 import fr.setphysics.common.geom.Position;
-import fr.setphysics.common.geom.shape.Cuboid;
+import fr.setphysics.common.geom.shape.Sphere;
 
 
 import java.awt.*;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -30,10 +27,15 @@ public class Main {
         final Scene3D scene3D = new Scene3D(camera);
         scene3D.setSize(1000, 650);
 
-        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(.5, .5, 0), Color.RED, Color.BLACK);
+//        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(.5, .5, 0), Color.RED, Color.BLACK);
+//
+//        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(0, .5, .5), Color.GREEN, Color.BLACK);
 
-        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(0, .5, .5), Color.GREEN, Color.BLACK);
+        Random r = new Random();
 
+        for(int i = 0; i < 25; i++) {
+            scene3D.addObject(new Sphere(r.nextDouble()/2, 3), new Position(r.nextDouble()*2-1, 1, r.nextDouble()*2-1), Color.MAGENTA);
+        }
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
         frame.getContentPane().setLayout(new BorderLayout());
