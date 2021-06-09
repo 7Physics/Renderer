@@ -13,13 +13,17 @@ public class Object3D implements Renderable, Positionable {
     private final Position position;
     private final Shape shape;
     private Color color;
+
+    private Color lightColor;
+    private Color darkColor;
+
     private Color edgeColor;
 
     public Object3D(Shape shape, Position position, Color color, Color edgeColor) {
         this.shape = shape;
         this.position = position;
-        this.color = color;
         this.edgeColor = edgeColor;
+        setColor(color);
     }
 
     public Object3D(Shape shape, Position position, Color color) {
@@ -45,6 +49,9 @@ public class Object3D implements Renderable, Positionable {
 
     public void setColor(Color color) {
         this.color = color;
+        // Stockés en attributs pour éviter les calculs inutiles :
+        lightColor = new Color((int)Math.min(color.getRed()*1.33, 255), (int)Math.min(color.getGreen()*1.33, 255), (int)Math.min(color.getBlue()*1.33, 255), color.getAlpha());
+        darkColor = new Color((int)(color.getRed()*0.66), (int)(color.getGreen()*0.66), (int)(color.getBlue()*0.66), color.getAlpha());
     }
 
     public void setEdgeColor(Color edgeColor) {
@@ -65,7 +72,10 @@ public class Object3D implements Renderable, Positionable {
         // Dessin du carré
         for (Vec3 vertex : vertices) {
             double factor = (vertex.getY()-bounds.getMinY())/ bounds.getHeight();
-            gl.glColor4d((color.getRed()/255f)*factor, (color.getGreen()/255f)*factor, (color.getBlue()/255f)*factor, color.getAlpha()/255f);
+            gl.glColor4d((lightColor.getRed()/255f)*factor + (darkColor.getRed()/255f)*(1-factor),
+                    (lightColor.getGreen()/255f)*factor + (darkColor.getGreen()/255f)*(1-factor),
+                    (lightColor.getBlue()/255f)*factor + (darkColor.getBlue()/255f)*(1-factor),
+                    color.getAlpha()/255f);
             vertex = position.getCoords().add(vertex);
             gl.glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
         }
