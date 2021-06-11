@@ -4,7 +4,6 @@ import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.shape.Cuboid;
 import fr.setphysics.common.geom.shape.Sphere;
 
-
 import java.awt.*;
 import java.util.Random;
 
@@ -29,6 +28,8 @@ public class Main {
         scene3D.setSize(1000, 650);
 
         scene3D.addObject(new Cuboid(.1, .1, 1), new Position(.5, .5, 0), Color.RED, Color.BLACK);
+
+        scene3D.addObject(new Cuboid(.1, .1, 1), new Position(0, .5, .5), Color.GREEN, Color.BLACK);
 
         Random r = new Random();
 

@@ -5,6 +5,7 @@ import fr.setphysics.common.geom.Bounds;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.Shape;
 import fr.setphysics.common.geom.Vec3;
+import fr.setphysics.common.logger.Logger;
 
 import java.awt.*;
 import java.util.List;
@@ -154,7 +155,7 @@ public class Object3D implements Renderable, Positionable {
      */
     @Override
     public void render(GL2 gl) {
-        gl.glBegin(GL2.GL_QUADS);
+        gl.glBegin(GL2.GL_TRIANGLES);
 
         List<Vec3> vertices = shape.getVertices();
 
