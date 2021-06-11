@@ -29,6 +29,8 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 
 	private final GLU glu = new GLU();
 
+	private final FPSAnimator fpsAnimator = new FPSAnimator(this, 300);
+
 	/**
 	 * Caméra observant la scène
 	 */
@@ -49,8 +51,22 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 		addMouseWheelListener(mouseListener);
 		addMouseMotionListener(mouseListener);
 
-		FPSAnimator fps = new FPSAnimator(this, 300);
-		fps.start();
+		fpsAnimator.start();
+	}
+
+	/**
+	 * Désactive le refraichissement automatique du rendu OpenGL.
+	 */
+	public void stopAnimation() {
+		fpsAnimator.stop();
+	}
+
+
+	/**
+	 * Active le refraichissement automatique du rendu OpenGL.
+	 */
+	public void startAnimation() {
+		fpsAnimator.start();
 	}
 
 	/**
