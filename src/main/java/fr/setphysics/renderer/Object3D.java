@@ -1,10 +1,8 @@
 package fr.setphysics.renderer;
 
 import com.jogamp.opengl.GL2;
-import fr.setphysics.common.geom.BoundingBox;
-import fr.setphysics.common.geom.Position;
+import fr.setphysics.common.geom.*;
 import fr.setphysics.common.geom.Shape;
-import fr.setphysics.common.geom.Vec3;
 
 import java.awt.*;
 import java.util.List;

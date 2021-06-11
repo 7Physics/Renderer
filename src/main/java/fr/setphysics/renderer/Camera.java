@@ -1,6 +1,7 @@
 package fr.setphysics.renderer;
 
 import fr.setphysics.common.geom.Position;
+import fr.setphysics.common.geom.Positionable;
 import fr.setphysics.common.geom.Vec3;
 
 /**
