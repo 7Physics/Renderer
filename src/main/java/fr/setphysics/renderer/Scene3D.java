@@ -230,4 +230,8 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 		}
 		
 	}
+
+	public void removeObject(Object3D object3D) {
+		this.renderables.remove(object3D);
+	}
 }
