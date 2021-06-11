@@ -1,11 +1,10 @@
 package fr.setphysics.renderer;
 
 import com.jogamp.opengl.GL2;
-import fr.setphysics.common.geom.Bounds;
+import fr.setphysics.common.geom.BoundingBox;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.Shape;
 import fr.setphysics.common.geom.Vec3;
-import fr.setphysics.common.logger.Logger;
 
 import java.awt.*;
 import java.util.List;
@@ -159,7 +158,7 @@ public class Object3D implements Renderable, Positionable {
 
         List<Vec3> vertices = shape.getVertices();
 
-        Bounds bounds = shape.getBounds();
+        BoundingBox bounds = shape.getBoundingBox();
         // Dessin du carré
         for (Vec3 vertex : vertices) {
             double factor = (vertex.getY() - bounds.getMinY()) / bounds.getHeight();
