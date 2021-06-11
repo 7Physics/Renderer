@@ -13,6 +13,10 @@ public class SceneKeyListener implements KeyListener {
     private Set<Integer> pressedKeys = new HashSet<>();
     private final Scene3D scene;
 
+    /**
+     * Crée un écouteur pour gérer les actions effectuée sur la scène à l'appuie des touches.
+     * @param scene Scene sur laquelle agir.
+     */
     public SceneKeyListener(Scene3D scene) {
         this.scene = scene;
         keyActions.put(KeyEvent.VK_Q, camera -> camera.moveLeft(.025));
@@ -23,6 +27,9 @@ public class SceneKeyListener implements KeyListener {
         keyActions.put(KeyEvent.VK_SHIFT, camera -> camera.translateY(-.025));
     }
 
+    /**
+     * Effectue les actions sur la scène en fonction des tpuches actuellement pressées.
+     */
     public void update() {
         final Camera camera = scene.getCamera();
         for (Integer key : pressedKeys) {

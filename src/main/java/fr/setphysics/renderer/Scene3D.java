@@ -25,16 +25,20 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 	private float frameSizeRatio;
 	private final List<Renderable> renderables = new ArrayList<>();
 
-	private SceneKeyListener keyListener = new SceneKeyListener(this);
-	private SceneMouseListener mouseListener = new SceneMouseListener(this);
+	private final SceneKeyListener keyListener = new SceneKeyListener(this);
+	private final SceneMouseListener mouseListener = new SceneMouseListener(this);
 
-	private GLU glu = new GLU();
+	private final GLU glu = new GLU();
 
 	/**
 	 * Caméra observant la scène
 	 */
-	private Camera camera;
+	private final Camera camera;
 
+	/**
+	 * Crée une nouvelle scène 3D vue par la caméra passée en paramètre
+	 * @param camera Caméra observant la scène
+	 */
 	public Scene3D(Camera camera) {
 		super(new GLCapabilities( GLProfile.get( GLProfile.GL2 ) ));
 		this.camera = camera;
@@ -49,10 +53,16 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 		fps.start();
 	}
 
+	/**
+	 * @return Caméra visualisant la scèene
+	 */
 	public Camera getCamera() {
 		return camera;
 	}
 
+	/**
+	 * Initialisation OpenGL
+	 */
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		// Récupération du contexte OpenGL
@@ -70,6 +80,9 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 	public void dispose(GLAutoDrawable drawable) {
 	}
 
+	/**
+	 * Loop de rendu
+	 */
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		keyListener.update();
@@ -88,6 +101,9 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 		}
 	}
 
+	/**
+	 * Lorsque les dimensions de la scène sont modifiées.
+	 */
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(x, y, width, height);
@@ -102,7 +118,11 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 		refreshGlu(gl);
 	}
 
-	public void refreshGlu(GL2 gl) {
+	/**
+	 * Met à jour le contexte GLU (Perspective, position de la caméra...)
+	 * @param gl Contexte OpenGL
+	 */
+	private void refreshGlu(GL2 gl) {
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		glu.gluPerspective(camera.getFov(), frameSizeRatio, 1.0, 20.0);
@@ -117,17 +137,61 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 				0, 1, 0);
 	}
 
+
+	/**
+	 * Ajoute un objet 3D à la scène
+	 * @param object3D Objet 3D à ajouter
+	 * @return L'objet 3D ajouté (pour pouvoir appeler ses méthodes sur la même ligne)
+	 */
 	public Object3D addObject(Object3D object3D) {
 		this.renderables.add(object3D);
 		return object3D;
 	}
 
+	/**
+	 * Sucre syntaxique : Crée un nouvel objet 3D avec les paramètres passés et l'ajoute à la scène.
+	 * @param shape Forme de l'objet
+	 * @param position Position de l'objet
+	 * @param color Couleur de l'objet
+	 * @param edgeColor Couleur des arêtes de l'objet
+	 * @return Objet 3D nouvellement ajouté
+	 * @see Object3D#Object3D(Shape, Position, Color, Color)
+	 */
 	public Object3D addObject(Shape shape, Position position, Color color, Color edgeColor) {
 		return addObject(new Object3D(shape, position, color, edgeColor));
 	}
 
+	/**
+	 * Sucre syntaxique : Crée un nouvel objet 3D avec les paramètres passés et l'ajoute à la scène.
+	 * @param shape Forme de l'objet
+	 * @param position Position de l'objet
+	 * @param color Couleur de l'objet
+	 * @return Objet 3D nouvellement ajouté
+	 * @see Object3D#Object3D(Shape, Position, Color)
+	 */
 	public Object3D addObject(Shape shape, Position position, Color color) {
 		return addObject(new Object3D(shape, position, color));
+	}
+
+	/**
+	 * Sucre syntaxique : Crée un nouvel objet 3D avec les paramètres passés et l'ajoute à la scène.
+	 * @param shape Forme de l'objet
+	 * @param position Position de l'objet
+	 * @return Objet 3D nouvellement ajouté
+	 * @see Object3D#Object3D(Shape, Position)
+	 */
+	public Object3D addObject(Shape shape, Position position) {
+		return addObject(new Object3D(shape, position));
+	}
+
+	/**
+	 * Sucre syntaxique : Crée un nouvel objet 3D avec les paramètres passés et l'ajoute à la scène.
+	 * @param shape Forme de l'objet
+	 * @return Objet 3D nouvellement ajouté
+	 * @see Object3D#Object3D(Shape)
+	 */
+	public Object3D addObject(Shape shape) {
+		return addObject(new Object3D(shape));
 	}
 
 	@Override

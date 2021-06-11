@@ -3,6 +3,10 @@ package fr.setphysics.renderer;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.Vec3;
 
+/**
+ * Représente un objet possédant une position.
+ * Sucre syntaxique pour appeler les méthodes de changement de position sur l'objet lui-même plutôt que sur son objet Position.
+ */
 public interface Positionable {
     /**
      * Retourne la position de l'objet
@@ -37,7 +41,7 @@ public interface Positionable {
 
     /**
      * Renvoi une copie du vecteur coordonnées de l'objet
-     * @return coords
+     * @return Coordonnées de l'objet
      */
     default Vec3 getCoords() {
         return getPosition().getCoords().clone();
@@ -45,7 +49,7 @@ public interface Positionable {
 
     /**
      * Renvoie l'abscisse de l'objet
-     * @return
+     * @return Abscisse de l'objet
      */
     default double getX() {
         return getPosition().getX();
@@ -53,7 +57,7 @@ public interface Positionable {
 
     /**
      * Renvoie l'ordonnée de l'objet
-     * @return
+     * @return Ordonnée de l'objet
      */
     default double getY() {
         return getPosition().getY();
@@ -61,7 +65,7 @@ public interface Positionable {
 
     /**
      * Renvoie la profondeur de l'objet
-     * @return
+     * @return Profondeur de l'objet
      */
     default double getZ() {
         return getPosition().getZ();
@@ -85,7 +89,7 @@ public interface Positionable {
 
     /**
      * Translate la position de l'objet sur l'axe X
-     * @param offset
+     * @param offset Décalage
      */
     default void translateX(double offset) {
         getPosition().translateX(offset);
@@ -93,7 +97,7 @@ public interface Positionable {
 
     /**
      * Translate la position de l'objet sur l'axe Y
-     * @param offset
+     * @param offset Décalage
      */
     default void translateY(double offset) {
         getPosition().translateY(offset);
@@ -101,7 +105,7 @@ public interface Positionable {
 
     /**
      * Translate la position de l'objet sur l'axe X
-     * @param offset
+     * @param offset Décalage
      */
     default void translateZ(double offset) {
         getPosition().translateZ(offset);
