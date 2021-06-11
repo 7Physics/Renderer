@@ -1,16 +1,13 @@
 package fr.setphysics.renderer;
 
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.util.FPSAnimator;
 import fr.setphysics.common.geom.Position;
 import fr.setphysics.common.geom.shape.Cuboid;
 import fr.setphysics.common.geom.shape.Sphere;
 
 import java.awt.*;
+import java.util.Random;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * Classe de lancement du moteur 3D 7Physics. Seule la création d'une
@@ -34,7 +31,13 @@ public class Main {
 
         scene3D.addObject(new Cuboid(.1, .1, 1), new Position(0, .5, .5), Color.GREEN, Color.BLACK);
 
+        Random r = new Random();
 
+        for(int i = 0; i < 25; i++) {
+            scene3D.addObject(new Sphere(r.nextDouble()/2, 3))
+                    .setPosition(new Position(r.nextDouble()*2-1, 1, r.nextDouble()*2-1))
+                    .setColor(Color.RED, Color.BLUE);
+        }
         // Création de la frame
         final JFrame frame = new JFrame ("7Physics");
         frame.getContentPane().setLayout(new BorderLayout());

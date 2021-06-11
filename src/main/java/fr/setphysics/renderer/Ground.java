@@ -2,12 +2,19 @@ package fr.setphysics.renderer;
 
 import com.jogamp.opengl.GL2;
 
+/**
+ * Sol d'une scène 3D
+ */
 public class Ground implements Renderable {
     private final double width;
     private final double lineGap;
 
-    public Ground(double width, double lineGap) {
-        this.width = width;
+    /**
+     * @param size Dimension du côté du sol
+     * @param lineGap Distance entre les lignes du sol
+     */
+    public Ground(double size, double lineGap) {
+        this.width = size;
         this.lineGap = lineGap;
     }
 

@@ -15,6 +15,10 @@ public class SceneMouseListener implements MouseMotionListener, MouseWheelListen
 
     private final Scene3D scene;
 
+    /**
+     * Crée un écouteur pour gérer les actions effectuée sur la scène au mouvement de la souris.
+     * @param scene Scene sur laquelle agir.
+     */
     public SceneMouseListener(Scene3D scene) {
         this.scene = scene;
     }
