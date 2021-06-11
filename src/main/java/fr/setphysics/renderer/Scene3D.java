@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -22,7 +23,7 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 	 * Ratio width/height des dimensions de la fenêtre
 	 */
 	private float frameSizeRatio;
-	private final List<Renderable> renderables = new ArrayList<>();
+	private final List<Renderable> renderables = new CopyOnWriteArrayList<>();
 
 	private final SceneKeyListener keyListener = new SceneKeyListener(this);
 	private final SceneMouseListener mouseListener = new SceneMouseListener(this);
