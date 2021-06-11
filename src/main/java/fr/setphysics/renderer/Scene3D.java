@@ -58,7 +58,7 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 	 * @param camera Caméra observant la scène
 	 */
 	public Scene3D(Camera camera) {
-		this(camera, new Ground(4, .2));
+		this(camera, new Ground(10, .2));
 	}
 
 	/**
