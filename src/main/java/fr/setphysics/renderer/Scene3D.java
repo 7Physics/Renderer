@@ -38,11 +38,12 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 	/**
 	 * Crée une nouvelle scène 3D vue par la caméra passée en paramètre
 	 * @param camera Caméra observant la scène
+	 * @param ground Sol de la scune
 	 */
-	public Scene3D(Camera camera) {
+	public Scene3D(Camera camera, Ground ground) {
 		super(new GLCapabilities( GLProfile.get( GLProfile.GL2 ) ));
 		this.camera = camera;
-		renderables.add(new Ground(4, .2));
+		renderables.add(ground);
 
 		addGLEventListener(this);
 		addKeyListener(keyListener);
@@ -51,6 +52,14 @@ public class Scene3D extends GLCanvas implements GLEventListener, Iterable<Objec
 
 		FPSAnimator fps = new FPSAnimator(this, 300);
 		fps.start();
+	}
+
+	/**
+	 * Crée une nouvelle scène 3D vue par la caméra passée en paramètre
+	 * @param camera Caméra observant la scène
+	 */
+	public Scene3D(Camera camera) {
+		this(camera, new Ground(4, .2));
 	}
 
 	/**
